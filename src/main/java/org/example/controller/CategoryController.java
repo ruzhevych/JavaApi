@@ -1,11 +1,11 @@
 package org.example.controller;
 
+import org.example.dto.category.CategoryCreateDTO;
+import org.example.dto.category.CategoryEditDTO;
 import org.example.entites.CategoryEntity;
-import org.example.repository.ICategoryRepository;
+import org.example.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -14,11 +14,31 @@ import java.util.List;
 public class CategoryController {
 
     @Autowired
-    private ICategoryRepository repository;
+    private CategoryService categoryService;
 
     @GetMapping
     public List<CategoryEntity> getAllCategories() {
-        return repository.findAll();
+        return categoryService.getList();
+    }
+
+    @GetMapping("/{id}")
+    public CategoryEntity getCategoryById(@PathVariable int id) {
+        return categoryService.getCategory(id);
+    }
+
+    @PostMapping
+    public CategoryEntity create(CategoryCreateDTO dto) {
+        return categoryService.create(dto);
+    }
+
+    @PutMapping
+    public CategoryEntity edit(CategoryEditDTO dto) {
+        return categoryService.edit(dto);
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable int id) {
+        categoryService.delete(id);
     }
 
 }
