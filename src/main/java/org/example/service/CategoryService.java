@@ -19,7 +19,7 @@ public class CategoryService {
         return categoryRepository.findAll();
     }
 
-    public CategoryEntity getCategory(int id) {
+    public CategoryEntity getById(int id) {
         return categoryRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Category not found"));
     }

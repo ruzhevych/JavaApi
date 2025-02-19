@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:5173") // Дозволяє доступ з React
 @RestController
 @RequestMapping("/api/categories")
 public class CategoryController {
@@ -23,16 +24,16 @@ public class CategoryController {
 
     @GetMapping("/{id}")
     public CategoryEntity getCategoryById(@PathVariable int id) {
-        return categoryService.getCategory(id);
+        return categoryService.getById(id);
     }
 
     @PostMapping
-    public CategoryEntity create(CategoryCreateDTO dto) {
+    public CategoryEntity create(@RequestBody CategoryCreateDTO dto) {
         return categoryService.create(dto);
     }
 
     @PutMapping
-    public CategoryEntity edit(CategoryEditDTO dto) {
+    public CategoryEntity edit(@RequestBody CategoryEditDTO dto) {
         return categoryService.edit(dto);
     }
 
