@@ -1,5 +1,6 @@
 package org.example.service;
 
+import lombok.AllArgsConstructor;
 import org.example.dto.category.CategoryCreateDTO;
 import org.example.dto.category.CategoryEditDTO;
 import org.example.dto.category.CategoryItemDTO;
@@ -13,11 +14,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class CategoryService {
-    @Autowired
     private ICategoryRepository categoryRepository;
-
-    @Autowired
     private ICategoryMapper categoryMapper;
 
     public List<CategoryItemDTO> getList() {
