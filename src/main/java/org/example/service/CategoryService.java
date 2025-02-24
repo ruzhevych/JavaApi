@@ -2,7 +2,9 @@ package org.example.service;
 
 import org.example.dto.category.CategoryCreateDTO;
 import org.example.dto.category.CategoryEditDTO;
+import org.example.dto.category.CategoryItemDTO;
 import org.example.entites.CategoryEntity;
+import org.example.mapper.ICategoryMapper;
 import org.example.repository.ICategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,15 +17,18 @@ public class CategoryService {
     @Autowired
     private ICategoryRepository categoryRepository;
 
-    public List<CategoryEntity> getList() {
-        return categoryRepository.findAll();
+    @Autowired
+    private ICategoryMapper categoryMapper;
+
+    public List<CategoryItemDTO> getList() {
+        return categoryMapper.toDto(categoryRepository.findAll());
     }
 
-    public CategoryEntity getById(int id) {
-        return categoryRepository.findById(id)
+    public CategoryItemDTO getById(int id) {
+        var entity = categoryRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Category not found"));
+        return categoryMapper.toDto(entity);
     }
-
 
     public CategoryEntity create(CategoryCreateDTO dto) {
         CategoryEntity entity = new CategoryEntity();

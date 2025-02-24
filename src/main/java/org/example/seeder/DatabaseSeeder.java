@@ -8,6 +8,7 @@ import org.example.entites.ProductImageEntity;
 import org.example.repository.ICategoryRepository;
 import org.example.repository.IProductImageRepository;
 import org.example.repository.IProductRepository;
+import org.example.service.FileService;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -19,16 +20,24 @@ public class DatabaseSeeder {
     private final ICategoryRepository categoryRepository;
     private final IProductRepository productRepository;
     private final IProductImageRepository productImageRepository;
+    private final FileService fileService;
 
     @PostConstruct
     public void seed() {
         if (categoryRepository.count() == 0) {
+
+            var electronics = fileService.load("https://www.recyclezone.org.uk/wp-content/uploads/2020/11/dispose-of-electronics-feature.jpg");
+            var clothing = fileService.load("https://designrelated.com/wp-content/uploads/2024/01/image-1.jpeg");
+            var books = fileService.load("https://collegeinfogeek.com/wp-content/uploads/2018/11/Essential-Books.jpg");
+            var home_kitchen = fileService.load("https://cliffsliving.com/wp-content/uploads/2023/02/CLF-Mountain-Kitchen-e1596209483747.jpg");
+            var toys = fileService.load("https://perfectcolourants.com/wp-content/uploads/2023/10/Toy.webp");
+
             List<CategoryEntity> categories = List.of(
-                    createCategory("Electronics", "electronics.jpg", "Devices and gadgets"),
-                    createCategory("Clothing", "clothing.jpg", "Apparel for men and women"),
-                    createCategory("Books", "books.jpg", "Various genres of books"),
-                    createCategory("Home & Kitchen", "home_kitchen.jpg", "Household essentials"),
-                    createCategory("Toys", "toys.jpg", "Toys and games for kids")
+                    createCategory("Electronics", electronics, "Devices and gadgets"),
+                    createCategory("Clothing", clothing, "Apparel for men and women"),
+                    createCategory("Books", books, "Various genres of books"),
+                    createCategory("Home & Kitchen", home_kitchen, "Household essentials"),
+                    createCategory("Toys", toys, "Toys and games for kids")
             );
             categoryRepository.saveAll(categories);
         }
