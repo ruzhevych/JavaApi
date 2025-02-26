@@ -3,6 +3,7 @@ package org.example.service;
 import lombok.AllArgsConstructor;
 import org.example.dto.product.ProductItemDTO;
 import org.example.dto.product.ProductPostDTO;
+import org.example.dto.product.ProductPutDTO;
 import org.example.entites.CategoryEntity;
 import org.example.entites.ProductEntity;
 import org.example.entites.ProductImageEntity;
@@ -56,7 +57,7 @@ public class ProductService {
         return entity;
     }
 
-    public boolean updateProduct(Integer id, ProductPostDTO product) {
+    public boolean updateProduct(Integer id, ProductPutDTO product) {
         var res = productRepository.findById(id);
         if (res.isEmpty()) {
             return false;
@@ -69,6 +70,24 @@ public class ProductService {
         cat.setId(product.getCategoryId());
         entity.setCategory(cat);
         productRepository.save(entity);
+
+        for (var img : product.getRemoveImages()) {
+            var removeImage = productImageRepository.findByName(img).get();
+            fileService.remove(img);
+            productImageRepository.delete(removeImage);
+        }
+
+        int priority = 1;
+        for (var img : product.getImages()) {
+            ProductImageEntity image = new ProductImageEntity();
+            var imageName = fileService.load(img);
+            image.setName(imageName);
+            image.setPriority(priority);
+            image.setProduct(entity);
+            productImageRepository.save(image);
+            priority++;
+        }
+
         return true;
     }
 
@@ -76,6 +95,12 @@ public class ProductService {
         var res = productRepository.findById(id);
         if (res.isEmpty()) {
             return false;
+        }
+        var imgs = res.get().getImages();
+        for (var item : imgs)
+        {
+            fileService.remove(item.getName());
+            productImageRepository.delete(item);
         }
         productRepository.deleteById(id);
         return true;
