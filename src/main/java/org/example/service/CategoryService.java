@@ -41,6 +41,15 @@ public class CategoryService {
         return entity;
     }
 
+//    public CategoryEntity edit(CategoryEditDTO dto) {
+//        CategoryEntity entity = categoryRepository.findById(dto.getId()).get();
+//        entity.setName(dto.getName());
+//        entity.setDescription(dto.getDescription());
+//        entity.setImage(dto.getImage());
+//        categoryRepository.save(entity);
+//        return entity;
+//    }
+
     public CategoryEntity edit(CategoryEditDTO dto) {
         CategoryEntity entity = categoryRepository.findById(dto.getId())
                 .orElseThrow(() -> new RuntimeException("Category not found"));
@@ -52,8 +61,8 @@ public class CategoryService {
             entity.setDescription(dto.getDescription());
         }
         if (dto.getImage() != null) {
-            fileService.remove(entity.getName());
-            var imageName = fileService.load(dto.getName());
+            fileService.remove(entity.getImage());
+            var imageName = fileService.load(dto.getImage());
             entity.setImage(imageName);
         }
 
@@ -63,7 +72,7 @@ public class CategoryService {
     public void delete(int id) {
         CategoryEntity entity = categoryRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Category not found"));
-        fileService.remove(entity.getName());
+        fileService.remove(entity.getImage());
         categoryRepository.delete(entity);
     }
 }

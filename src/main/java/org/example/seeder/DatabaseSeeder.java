@@ -22,8 +22,15 @@ public class DatabaseSeeder {
     private final IProductImageRepository productImageRepository;
     private final FileService fileService;
 
+    private final UserSeeder userSeeder;
+    private final RoleSeeder roleSeeder;
+
+
     @PostConstruct
     public void seed() {
+
+        roleSeeder.seed();
+        userSeeder.seed();
         if (categoryRepository.count() == 0) {
 
             var electronics = fileService.load("https://www.recyclezone.org.uk/wp-content/uploads/2020/11/dispose-of-electronics-feature.jpg");

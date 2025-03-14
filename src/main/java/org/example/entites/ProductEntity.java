@@ -1,10 +1,9 @@
 package org.example.entites;
-import jakarta.persistence.*;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDateTime;
 import java.util.List;
-import net.minidev.json.annotate.JsonIgnore;
 
 @Data
 @Entity
